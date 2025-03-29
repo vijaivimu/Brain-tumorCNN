@@ -4,6 +4,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 from tensorflow.keras.optimizers import Adam
 from preprocessing import get_train_generator
+from tensorflow.keras.callbacks import ReduceLROnPlateau
 
 # Define dataset paths
 IMAGE_DIR = "../data/brain-tumor/train/images"
@@ -29,25 +30,24 @@ model = Sequential([
     Dense(1, activation='sigmoid')  # Binary classification
 ])
 
-def lr_scheduler(epoch, lr):
-    if epoch > 5:  # Reduce LR after 5 epochs
-        return lr * 0.1  # Reduce by a factor of 10
-    return lr
-
-# Create the callback
-lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_scheduler)
+lr_callback = ReduceLROnPlateau(
+    monitor='loss',  # Monitor loss instead of epoch count
+    factor=0.5,      # Reduce LR by half
+    patience=3,      # Wait 3 epochs before reducing
+    min_lr=1e-6      # Set a lower limit
+)
 
 # Compile the model
 model.compile(optimizer=Adam(learning_rate=0.001), loss='binary_crossentropy', metrics=['accuracy'])
 
 # Train the model
-EPOCHS = 10
+EPOCHS = 100
 
 model.fit(
     train_generator,
     epochs=EPOCHS,
     steps_per_epoch=len(train_generator),
-    verbose=1
+    verbose=1,
     callbacks=[lr_callback]  # Add the learning rate scheduler callback
 )
 
