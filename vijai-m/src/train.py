@@ -29,6 +29,14 @@ model = Sequential([
     Dense(1, activation='sigmoid')  # Binary classification
 ])
 
+def lr_scheduler(epoch, lr):
+    if epoch > 5:  # Reduce LR after 5 epochs
+        return lr * 0.1  # Reduce by a factor of 10
+    return lr
+
+# Create the callback
+lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_scheduler)
+
 # Compile the model
 model.compile(optimizer=Adam(learning_rate=0.001), loss='binary_crossentropy', metrics=['accuracy'])
 
@@ -40,6 +48,7 @@ model.fit(
     epochs=EPOCHS,
     steps_per_epoch=len(train_generator),
     verbose=1
+    callbacks=[lr_callback]  # Add the learning rate scheduler callback
 )
 
 # Save the model

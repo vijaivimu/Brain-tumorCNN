@@ -22,9 +22,12 @@ def get_train_generator(image_dir, label_dir, batch_size=32, target_size=(224, 2
     # Convert to DataFrame
     df = pd.DataFrame(data, columns=["filename", "label"])
 
+    # Print label distribution
+    print("Training Dataset Distribution:")
+    print(df["label"].value_counts())
+
     train_datagen = ImageDataGenerator(
     rescale=1.0/255,
-    validation_split=0.2,
     rotation_range=20,  # Rotate images by up to 20 degrees
     width_shift_range=0.2,  # Shift images horizontally by 20% of width
     height_shift_range=0.2,  # Shift images vertically by 20% of height
