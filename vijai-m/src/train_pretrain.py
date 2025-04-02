@@ -2,12 +2,13 @@ import os
 import tensorflow as tf
 from tensorflow.keras import models, layers
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.applications import EfficientNetB0
-from tensorflow.keras.applications.efficientnet import preprocess_input
-from preprocessing_pretrain import get_train_generator
+#from tensorflow.keras.applications import EfficientNetB0
+#from tensorflow.keras.applications.efficientnet import preprocess_input
+#from preprocessing_pretrain import get_train_generator
+from preprocessing_crop import get_train_generator
 
 # Define dataset paths
-IMAGE_DIR = "../data/brain-tumor/train/images"
+IMAGE_DIR = "../data/brain-tumor/train/colorized_images"
 LABEL_DIR = "../data/brain-tumor/train/labels"
 
 # Get data generator
@@ -16,8 +17,16 @@ IMG_SIZE = (224, 224)
 
 train_generator = get_train_generator(IMAGE_DIR, LABEL_DIR, batch_size=BATCH_SIZE, target_size=IMG_SIZE)
 
+#from tensorflow.keras.applications import MobileNetV2
+#base_model = MobileNetV2(weights="imagenet", include_top=False, input_shape=(224, 224, 3))
+
 # Load pretrained EfficientNetB0 (without top layer)
-base_model = EfficientNetB0(weights="imagenet", include_top=False, input_shape=(224, 224, 3))
+#base_model = EfficientNetB0(weights="imagenet", include_top=False, input_shape=(224, 224, 3))
+
+from tensorflow.keras.applications import ResNet50
+from tensorflow.keras.applications.resnet50 import preprocess_input
+# Load ResNet50 base model
+base_model = ResNet50(weights="imagenet", include_top=False, input_shape=(224, 224, 3))
 
 # Unfreeze last few layers for fine-tuning
 base_model.trainable = True
