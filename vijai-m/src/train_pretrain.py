@@ -4,7 +4,7 @@ from tensorflow.keras import models, layers
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.applications import EfficientNetB0
 from tensorflow.keras.applications.efficientnet import preprocess_input
-from preprocessing import get_train_generator
+from preprocessing_pretrain import get_train_generator
 
 # Define dataset paths
 IMAGE_DIR = "../data/brain-tumor/train/images"
