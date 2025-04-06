@@ -1,7 +1,8 @@
 import os
 import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications.efficientnet import preprocess_input
+#from tensorflow.keras.applications.efficientnet import preprocess_input
+from tensorflow.keras.applications.resnet50 import preprocess_input
 
 def get_validation_generator(image_dir, label_dir, batch_size=32, target_size=(224, 224)):
     # Create a DataFrame to store image paths and labels

@@ -3,7 +3,8 @@ import cv2
 import pandas as pd
 import numpy as np
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications.efficientnet import preprocess_input
+from tensorflow.keras.applications.resnet50 import preprocess_input
+#from tensorflow.keras.applications.efficientnet import preprocess_input
 
 def get_train_generator(image_dir, label_dir, batch_size=32, target_size=(224, 224)):
     data = []

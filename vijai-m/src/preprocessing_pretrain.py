@@ -1,7 +1,8 @@
 import os
 import pandas as pd
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications.efficientnet import preprocess_input
+#from tensorflow.keras.applications.efficientnet import preprocess_input
+from tensorflow.keras.applications.resnet50 import preprocess_input
 
 def get_train_generator(image_dir, label_dir, batch_size=32, target_size=(224, 224)):
     # Create a DataFrame to store image paths and labels
@@ -28,14 +29,15 @@ def get_train_generator(image_dir, label_dir, batch_size=32, target_size=(224, 2
     print(df["label"].value_counts())
 
     train_datagen = ImageDataGenerator(
-        preprocessing_function=preprocess_input,  # Normalize images for EfficientNet
-        rotation_range=20,  # Rotate images by up to 20 degrees
-        width_shift_range=0.2,  # Shift images horizontally by 20% of width
-        height_shift_range=0.2,  # Shift images vertically by 20% of height
-        shear_range=0.2,  # Shear transformation
-        zoom_range=0.2,  # Random zoom
-        horizontal_flip=True,  # Flip images horizontally
-        fill_mode="nearest"  # Fill missing pixels
+        preprocessing_function=preprocess_input,
+        rotation_range=15,              # less rotation
+        width_shift_range=0.1,          # smaller translation
+        height_shift_range=0.1,
+        shear_range=0.1,                # gentler shearing
+        zoom_range=0.2,                 # slight zoom
+        brightness_range=[0.8, 1.2],    # narrower brightness range
+        horizontal_flip=True,           # keep this
+        fill_mode="nearest"
     )
 
     train_generator = train_datagen.flow_from_dataframe(
